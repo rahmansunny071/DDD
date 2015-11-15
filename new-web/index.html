@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<head>
+<style>
+</style>
+<link rel="stylesheet" href="dist/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="dist/css/main.css">
+<link href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/css/bootstrap-select.css" rel="stylesheet"/>
+
+</head>
+
+<body>
+<!-- background color E5E7E5 -->
+
+<div class="everythinig">
+
+  
+
+  <div class="left-bar">
+  <div class="row">
+
+      <div class="col-xs-4">
+            <select class="selectpicker" id="filterattr" data-width="160px">
+            <option disabled selected> Component </option>
+			<option > Font </option>
+			<option > Color </option>
+            </select>
+        </div>
+</div>
+
+<div class="row">
+
+    <button type="button" class="btn btn-default" onclick="render()" style="margin-top: 10pt; float:right" id="doneBtn">Visualize</button>
+
+</div>
+</div>
+  <div class="right-bar">
+
+
+
+	
+    <div class="visualization" >
+
+    </div>
+	
+	<!--<div class="codes" id="colorcodes">
+
+    </div>-->
+	
+	<div class="Legend" id="colorLegend">
+
+    </div>
+
+    </div>
+	
+
+  </div> <!--right  bar-->
+
+</div>
+
+<script src="js/jquery-2.1.1.min.js"></script>
+<script src="assets/magicsuggest/magicsuggest-min.js"></script>
+<script src="js/d3.min.js"></script>
+<script src="js/heat.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/js/bootstrap-select.js"></script>
+<script type="text/javascript" src="//canvg.googlecode.com/svn/trunk/rgbcolor.js"></script> 
+<script type="text/javascript" src="//canvg.googlecode.com/svn/trunk/canvg.js"></script>
+</body>
