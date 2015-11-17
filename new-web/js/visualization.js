@@ -3,9 +3,9 @@ var margin = {top: 30, right: 40, bottom: 30, left: 200},
     height = 400 - margin.top - margin.bottom;
 var filtervalue="";
 var max=-1,min=10000;
-var componentCodes = [];
-var countArray = [];
-var componentArray = [];
+var componentCodes = []; // color/font mapping to name
+var countArray = []; // object array, each entry in the is a count for a given semantic label
+var componentArray = []; // color/ font array
 var codefile = "";
 var datafile = "";
 var semanticLabels = ["casual","chic","classic","clear","cool casual","dandy","dynamic","elegant","gorgeous","modern","natural","pretty","romantic"];
@@ -119,7 +119,7 @@ function render(){
 	{
 				var colors = d3.scale.linear()
     .domain([min,max])
-    .range(["lightblue", "darkblue"])
+    .range(["white", "black"])
     .interpolate(d3.interpolateHcl);
 		var xPos=0;
 	  var yPos=0;
@@ -225,7 +225,7 @@ function render(){
 	{
 				var colors = d3.scale.linear()
     .domain([min,max])
-    .range(["lightblue", "darkblue"])
+    .range(["white", "black"])
     .interpolate(d3.interpolateHcl);
 		var xPos=0;
 	  var yPos=0;
@@ -454,7 +454,7 @@ function generateFontCount(){
 		{
 			var obj = countArray[data[i].Font];
 			
-			//console.log(i,data[i]);
+			console.log(i,data[i]);
 			for(var j=0;j<semanticLabels.length;j++)
 			{
 				
