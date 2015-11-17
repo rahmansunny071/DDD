@@ -2,11 +2,14 @@
 <meta charset="utf-8">
 <head>
 <style>
+td {
+  padding-left: 10px !important;
+  padding-right: 10px !important;
+}
 </style>
 <link rel="stylesheet" href="dist/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="dist/css/main.css">
 <link href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/css/bootstrap-select.css" rel="stylesheet"/>
-
 </head>
 
 <body>
@@ -17,6 +20,7 @@
   
 
   <div class="left-bar">
+     <div  class="title"><h2>Font Color Semantics</h2></div>
   <div class="row">
 
       <div class="col-xs-4">
@@ -33,6 +37,13 @@
     <button type="button" class="btn btn-default" onclick="render()" style="margin-top: 10pt; float:right" id="doneBtn">Visualize</button>
 
 </div>
+
+<div class="row">
+
+    <button type="button" class="btn btn-default" onclick="showColorStat()" style="margin-top: 10pt; float:right" id="doneBtn">Statistics</button>
+
+</div>
+
 </div>
   <div class="right-bar">
 
@@ -49,6 +60,18 @@
 	
 	<div class="Legend" id="colorLegend">
 
+    </div>
+
+    <div class="table" id="tableC" display="None">
+        <table id="colorTable" display="None">
+         
+        </table>
+    </div>
+
+     <div class="table" id="tableF" display="None">
+        <table id="fontTable" display="None">
+         
+        </table>
     </div>
 
     </div>

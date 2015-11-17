@@ -9,6 +9,12 @@ var componentArray = []; // color/ font array
 var codefile = "";
 var datafile = "";
 var semanticLabels = ["casual","chic","classic","clear","cool casual","dandy","dynamic","elegant","gorgeous","modern","natural","pretty","romantic"];
+
+var colorCount = []; //total number of occurences in data
+var fontCount = []; //total number of occurences in data
+var colorStat = []; // condtitional probability model
+var fontStat = []; // conditional prob model
+
 function drawAxes(gridItemHeight, gridItemWidth, viz){
 	
 	//console.log(xTickList.length,yTickList.length);
@@ -151,6 +157,9 @@ function render(){
 										function(d)
 										{
 											var number=countArray[componentArray[i]][semanticLabels[j]]; 
+
+											colorStat[componentArray[i]][semanticLabels[j]] = (1.0*number)/colorCount[componentArray[i]]; //P(C|S)
+
 											var colorName="Color: "+componentCodes[componentArray[i]]+"\n";
 											var semLabel="SemLabel: "+semanticLabels[j]+"\n";
 											return colorName+semLabel+"Count: "+number;
@@ -179,6 +188,8 @@ function render(){
 			  .style("font-weight", 400)
 			  .style("font-size", "10px")
 			  .text(componentCodes[componentArray[i]]);
+
+
 		  
 		 
 	  }
@@ -220,6 +231,8 @@ function render(){
             .text(max)
             .attr("x", legendElementWidth*j)
             .attr("y", gridItemHeight+10);
+
+        genColorStat();
 	}
 	else
 	{
@@ -257,6 +270,9 @@ function render(){
 										function(d)
 										{
 											var number=countArray[componentArray[i]][semanticLabels[j]]; 
+
+											fontStat[componentArray[i]][semanticLabels[j]] = (1.0*number)/fontCount[componentArray[i]]; //P(F|S)
+
 											var colorName="Font: "+componentCodes[componentArray[i]]+"\n";
 											var semLabel="SemLabel: "+semanticLabels[j]+"\n";
 											return colorName+semLabel+"Count: "+number;
@@ -316,6 +332,8 @@ function render(){
             .text(max)
             .attr("x", legendElementWidth*j)
             .attr("y", gridItemHeight+10);
+
+        genFontStat();
 	}
 		 
 	 
@@ -333,6 +351,8 @@ function generateColorBook(){
 			//console.log(data[i].Name,data[i].Color);
 			componentCodes[data[i].Color] =  data[i].Name;//data[i].Color
 			
+			colorCount[data[i].Color] = 0;
+
 			componentArray[i] = data[i].Color;
 			
 			var obj = [];
@@ -343,6 +363,8 @@ function generateColorBook(){
 			}
 			countArray[data[i].Color]= obj;
 			
+			colorStat[data[i].Color]= obj;
+
 			obj.length = 0;
 		}
 		
@@ -362,6 +384,8 @@ function generateColorCount(){
 		for(var i=0;i<data.length;i++)
 		{
 			var obj = countArray[data[i].Color];
+
+			colorCount[data[i].Color]++;
 			
 			//console.log(data[i].Color,countArray[data[i].Color]);
 			for(var j=0;j<semanticLabels.length;j++)
@@ -423,6 +447,8 @@ function generateFontBook(){
 			//console.log(data[i]);
 			componentCodes[data[i].Font] =  data[i].Name;//data[i].Color
 			
+			fontCount[data[i].Font] = 0;
+
 			componentArray[i] = data[i].Font;
 			
 			var obj = [];
@@ -432,6 +458,8 @@ function generateFontBook(){
 				obj[semanticLabels[j]] = 0;
 			}
 			countArray[data[i].Font]= obj;
+
+			fontStat[data[i].Font]= obj;
 			
 			obj.length = 0;
 		}
@@ -454,7 +482,8 @@ function generateFontCount(){
 		{
 			var obj = countArray[data[i].Font];
 			
-			console.log(i,data[i]);
+			fontCount[data[i].Font]++;
+			//console.log(i,data[i]);
 			for(var j=0;j<semanticLabels.length;j++)
 			{
 				
@@ -503,7 +532,95 @@ function generateFontCount(){
 }
 //render();
 
+ function genColorStat()
+ {
+ 	var table = document.getElementById("colorTable");
+ 	//console.log(table);
+ 	var headR = table.insertRow(0);
+ 	var headC1 = headR.insertCell(0);
+ 	var headC2 = headR.insertCell(1);
+ 	var headC3 = headR.insertCell(2);
+ 	headC1.innerHTML = "Color";
+    headC2.innerHTML = "Semantic Label";
+    headC3.innerHTML = "P(Color | Semantic Label)";
 
+    var count = 1;
+    for(var i=0;i<componentArray.length;i++)
+	{
+		  
+		  for(var j=0;j<semanticLabels.length;j++)
+		  {
+		  	var row = table.insertRow(count);
+		  	count++;
+		  	var cell1 = row.insertCell(0);
+	    	var cell2 = row.insertCell(1);
+	    	var cell3 = row.insertCell(2);
+
+	    	cell1.innerHTML = componentCodes[componentArray[i]];
+	    	cell2.innerHTML = semanticLabels[j];
+	    	var prob = (colorStat[componentArray[i]][semanticLabels[j]])*100;
+	    	cell3.innerHTML = prob.toFixed(2);
+	    
+
+
+		  }
+	}
+
+	document.getElementById("colorTable").display = "None";
+ 	
+
+}
+
+function genFontStat()
+ {
+ 	var table = document.getElementById("fontTable");
+ 	//console.log(table);
+ 	var headR = table.insertRow(0);
+ 	var headC1 = headR.insertCell(0);
+ 	var headC2 = headR.insertCell(1);
+ 	var headC3 = headR.insertCell(2);
+ 	headC1.innerHTML = "Font";
+    headC2.innerHTML = "Semantic Label";
+    headC3.innerHTML = "P(Font | Semantic Label)";
+
+    var count = 1;
+    for(var i=0;i<componentArray.length;i++)
+	{
+		  
+		  for(var j=0;j<semanticLabels.length;j++)
+		  {
+		  	var row = table.insertRow(count);
+		  	count++;
+		  	var cell1 = row.insertCell(0);
+	    	var cell2 = row.insertCell(1);
+	    	var cell3 = row.insertCell(2);
+
+	    	cell1.innerHTML = componentCodes[componentArray[i]];
+	    	cell2.innerHTML = semanticLabels[j];
+	    	var prob = (fontStat[componentArray[i]][semanticLabels[j]])*100;
+	    	cell3.innerHTML = prob.toFixed(2);
+	    
+
+
+		  }
+	}
+ 	
+ 	document.getElementById("fontTable").display = "None";
+
+
+ }
+
+ function showColorStat()
+ {
+ 	document.getElementById("tableC").display = "block";
+ 	document.getElementById("colorTable").display = "block";
+ }
+
+ function showFontStat()
+ {
+ 	document.getElementById("tableF").display = "block";
+ 	document.getElementById("fontTable").display = "block";
+ }
 
  $('#filterattr').on('change', function(){
 	 filtervalue = $(this).find("option:selected").val();
