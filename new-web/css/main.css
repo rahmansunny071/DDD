@@ -1,0 +1,24 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+div {
+    display: block;
+}
+
+td {
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+}
+
+#viz {
+    margin: 30px, 400px;
+    overflow: auto;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+}

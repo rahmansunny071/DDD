@@ -1,654 +1,424 @@
-var margin = {top: 30, right: 40, bottom: 30, left: 200},
-    width = 1000 - margin.left - margin.right,
-    height = 400 - margin.top - margin.bottom;
-var filtervalue="";
-var max=-1,min=10000;
-var componentCodes = []; // color/font mapping to name
-var countArray = []; // object array, each entry in the is a count for a given semantic label
-var componentArray = []; // color/ font array
-var codefile = "";
-var datafile = "";
+var margin = {top: 30, right: 40, bottom: 30, left: 200};
+var width = 1000 - margin.left - margin.right;
+var height = 400 - margin.top - margin.bottom;
 var semanticLabels = ["casual","chic","classic","clear","cool casual","dandy","dynamic","elegant","gorgeous","modern","natural","pretty","romantic"];
 
-var colorCount = []; //total number of occurences in data
-var fontCount = []; //total number of occurences in data
-var colorStat = []; // condtitional probability model
-var fontStat = []; // conditional prob model
+var type = '';
+var codefile = '';
+var datafile = '';
 
-function drawAxes(gridItemHeight, gridItemWidth, viz){
-	
-	//console.log(xTickList.length,yTickList.length);
- // var xAxis = d3.svg.axis().scale(x).ticks(0);//ticks(xTickList.length);
- // var yAxis = d3.svg.axis().scale(y).ticks(0);//ticks(yTickList.length).orient("left");
+var componentCodes = {};    // color/font mapping
+var dataCount = {};         // total number of occurences in data
+var dataProb = {};              // condtitional probability model
+var dataSize = 0;
 
- // viz.selectAll("g.x.axis").remove();
-  //viz.selectAll("g.y.axis").remove();
-  
-  
-  
-  /*viz.append("g")            // Add the X Axis
-    .attr("class", "x axis")
-    .attr("transform", "translate(0," + heightWin + ")")
-    .call(xAxis);
+var min = 10000, max = -1;
 
-  viz.append("g")
-      .attr("class", "y axis")
-      .call(yAxis);*/
-	  
-   for(var i=0;i<semanticLabels.length;i++)
-	{
-			  viz.append("text")
-			  .attr("class", "x label")
-			  .attr("text-anchor", "middle")
-			  .attr("x", i*gridItemWidth+gridItemWidth/2) //+gridItemWidth/2
-			  .attr("y", height + 15)
-			  //.attr("transform", "translate("+((i+1)*gridItemWidth/2)+",0)")
-			  .style("font-weight", 400)
-			  .style("font-size", "10px")
-			  .text(semanticLabels[i]);
-			  
-	}
-   viz.append("text")
-      .attr("class", "x label")
-      .attr("text-anchor", "end")
-      .attr("x", width*0.4)
-      .attr("y", height + 35)
-      .style("font-weight", 400)
-      .style("font-size", "14px")
-      .text("Semantic Labels");
-  
-  /*for(var i=0;i<componentArray.length;i++)
-	{
-			  viz.append("text")
-			  .attr("class", "y label")
-			  .attr("text-anchor", "left")
-			  .attr("x", gridItemWidth*semanticLabels.length+12)
-			  .attr("y", height - (i*gridItemHeight+gridItemHeight/4))
-			  //.attr("transform", "rotate(-90)")
-			  .style("font-weight", 400)
-			  .style("font-size", "10px")
-			  .text(componentCodes[componentArray[i]]);
-			  
-	}*/
-  
- /* viz.append("text")
-    .attr("class", "y label")
-    .attr("text-anchor", "middle")
-    .attr("y", 6)
-    .attr("dy", ".75em")
-    .attr("transform", "translate("+(-50)+",0)rotate(-90)")//"translate("+(widthWin+40)+",0)rotate(-90)")
-    .style("font-weight", 400)
-    .style("font-size", "14px")
-    .text("Colors");*/
-	
-  
-	
+var Semantics = function() {
+				this.casual = 0;
+				this.chic = 0;
+				this.classic = 0;
+				this.clear = 0;
+				this.cool = 0;
+				this.dandy = 0;
+				this.dynamic = 0;
+				this.elegant = 0;
+				this.gorgeous = 0;
+				this.modern = 0;
+				this.natural = 0;
+				this.pretty = 0;
+				this.romantic = 0;
+				this.total = 0;
+};
+
+function initData() {
+
+		componentCodes = {};
+		dataCount = {};
+
+		if(type === "Color") {
+				codefile = "colorcodes.csv";
+				datafile = "colors.csv"; 
+		}
+		else {
+				codefile = "fontcodes.csv";
+				datafile = "fonts.csv"; 
+		}
+
+		generateBook();
+		generateCount();
+		$.when( $.ajax( generateCount() ) ).then(function() {
+			$.when( $.ajax( calculateProb() ) ).then(function() {
+				sortProb();
+			});
+		});
+
 }
 
+function generateBook(){
+	d3.csv(codefile, function(data) {   // key - hexavalue, val - color name
+		for(var i = 0; i < data.length; i++) {
+			componentCodes[data[i][type]] =  data[i].Name;
+			dataCount[data[i][type]] = new Semantics();
+			dataProb[data[i][type]]= new Semantics();
+		}
+	});
+}
 
-var basic = d3.select(".visualization").append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom+20);
+Object.size = function(obj) {
+	var size = 0, key;
+	for (key in obj) {
+		if (obj.hasOwnProperty(key)) size++;
+	}
+	return size;
+};
 
-var viz = basic.append("g")
-    .attr("transform", 
-          "translate(" + margin.left/2 + "," + margin.top + ")");
-var basicLegend = d3.select("#colorLegend").append("svg")
-	.style("overflow", 'visible')
-    .style("margin-bottom", '20px')
-    .attr("width", width + margin.left + margin.right).attr("height",height + margin.top + margin.bottom+50).append("g").attr("transform", 
-          "translate(" + margin.left/2 + "," + margin.top + ")");
+function generateCount(){
+	d3.csv(datafile, function(data) {
+		for (var i = 1; i < data.length; i++) {
+			var row = data[i]
+			var name = '';
+			for (var key in row) {
+				if( key === type ) name = row[key];
+				else if(row[key] == 1) {
+					dataCount[name][key]++;
+					dataCount[name].total++;
+
+					if (dataCount[name][key] > max) max = dataCount[name][key];
+					if (dataCount[name][key] < min) min = dataCount[name][key];
+				}
+			}
+		}
+		dataSize = Object.size(dataCount);
+	});
+}
+
+function drawXLabel(gridItemWidth, gridItemHeight, viz){
+	for(var i = 0;i < semanticLabels.length; i++) {
+			viz.append("text")
+					.attr("class", "x label")
+					.attr("text-anchor", "middle")
+					.attr("x", i*gridItemWidth+gridItemWidth/2)
+					.attr("y", gridItemHeight*dataSize + 15)
+					.style("font-weight", 400)
+					.style("font-size", "10px")
+					.text(semanticLabels[i]);
+	}
+		
+	viz.append("text")
+			 .attr("class", "x label")
+			 .attr("text-anchor", "end")
+			 .attr("x", width*0.45)
+			 .attr("y", gridItemHeight*dataSize + 35)
+			 .style("font-weight", 400)
+			 .style("font-size", "14px")
+			 .text("Semantic Labels");
+
+}
+
+function drawLegend(gridItemWidth, gridItemHeight, colors, viz, legend) {
+
+		var legendElementWidth = Math.ceil(((1.0*(width + margin.left + margin.right))/2)/(2*(max-min)));
+		
+		for(var i=min,j=0;i<=max;i++,j++) {
+				var rectangle = legend.append("rect")
+																										.attr("x", legendElementWidth * j)
+																										.attr("y", 0)
+																										.attr("width", legendElementWidth)
+																										.attr("height", gridItemHeight)
+																										.style("fill", colors(i))
+																										.style("stroke", '#555');
+		}
+								
+		legend.append("text")
+								.attr("class", "mono")
+								.text(min)
+								.attr("x", -10)
+								.attr("y", gridItemHeight+15);
+												
+		legend.append("text")
+								.attr("class", "mono")
+								.text("Count")
+								.attr("x", legendElementWidth*(max-min)/2)
+								.attr("y", gridItemHeight+15);
+				
+		legend.append("text")
+								.attr("class", "mono")
+								.text(max)
+								.attr("x", legendElementWidth*j)
+								.attr("y", gridItemHeight+15);
+
+}
+
+function removeViz() {
+	var viz = document.getElementById("viz");
+	while (viz.firstChild) {
+	  viz.removeChild(viz.firstChild);
+	}
+}
+
 
 function render(){
 
-    
-    console.log("here");
-	console.log(componentCodes);
+	$('#viz').show();
+	$('#legend').show();
+	$('#table').hide();
 
-	console.log(componentArray);
-	console.log(countArray);
-	
-	console.log(min,max);
-	
-	
-		
-	viz.selectAll("rect").remove();
-	viz.selectAll("text").remove();
-	
-	basicLegend.selectAll("rect").remove();
-	basicLegend.selectAll("text").remove();
+	removeViz();
 
-	viz.selectAll("text.x.label").remove();
-   viz.selectAll("text.y.label").remove();
+	var basic = d3.select('#viz')
+		.append('svg')
+		.attr("width", width + margin.left + margin.right)
+		.attr("height", height + margin.top + margin.bottom+20);
+
+	var viz = basic.append("g")
+			.attr("transform", 
+						"translate(" + margin.left/2 + "," + margin.top + ")");
+	var legend = d3.select("#legend").append("svg")
+			.style("overflow", 'visible')
+			.style("margin-bottom", '20px')
+			.attr("width", width + margin.left + margin.right).attr("height",height + margin.top + margin.bottom+50).append("g").attr("transform", 
+						"translate(" + margin.left/2 + "," + margin.top + ")");
+
+
+	var colors = d3.scale.linear()
+											 .domain([min, max])
+											 .range(["white", "black"])
+											 .interpolate(d3.interpolateHcl);
+	var xPos = 0;
+	var yPos = 0;
+	var rectW = 0;
+	var rectH =0;
+	var gridItemWidth = 45;
+	var gridItemHeight = 20;
+	var legendElementWidth = 2;
 	
-	if(String(filtervalue)==String("Color"))
-	{
-				var colors = d3.scale.linear()
-    .domain([min,max])
-    .range(["white", "black"])
-    .interpolate(d3.interpolateHcl);
-		var xPos=0;
-	  var yPos=0;
-	  var rectW= 0;
-	  var rectH=0;
-	  var gridItemWidth = width / componentArray.length;
-		var gridItemHeight = height / componentArray.length;
-		var legendElementWidth = 2;//((widthWin + margin.left + margin.right)/2)/colors.length;
-		console.log(width,componentCodes.length,gridItemWidth);
-      for(var i=0;i<componentArray.length;i++)
-	  {
-		  for(var j=0;j<semanticLabels.length;j++)
-		  {
-			  xPos = j*gridItemWidth;
-			  yPos = i*gridItemHeight;//segmentArr_[i].yb-yMin
-			  rectW = gridItemWidth;
-			  rectH = gridItemHeight;
-			  
-			  var rectangle = viz.append("rect")
-                            .attr("x", xPos)
-                           .attr("y", yPos)
-                           .attr("width", rectW)
-						   .attr("height", rectH)
-						   .style("fill", colors(countArray[componentArray[i]][semanticLabels[j]])) //d3.interpolateHcl(paleYellow, darkBlue)(segmentArr_[i].a))//function(d) {     return heatmapColor(segmentArr_[i].a)})
-						   .style("stroke", '#555');
-						   
-			   rectangle.append("title").text
-									(
-										function(d)
-										{
-											var number=countArray[componentArray[i]][semanticLabels[j]]; 
-
-											colorStat[componentArray[i]][semanticLabels[j]] = (1.0*number)/colorCount[componentArray[i]]; //P(C|S)
-
-											var colorName="Color: "+componentCodes[componentArray[i]]+"\n";
-											var semLabel="SemLabel: "+semanticLabels[j]+"\n";
-											return colorName+semLabel+"Count: "+number;
-
+	var i = 0, j = 0;;
+	for(var name in dataCount) {
+		for(var sem in dataCount[name]) {
+			if (sem !== "total") {
+				xPos = j*gridItemWidth;
+				yPos = i*gridItemHeight;
+				rectW = gridItemWidth;
+				rectH = gridItemHeight;
 												
-										}
-									);
-		  }
-		  if(String(filtervalue) == String("Color"))
-		  {
-			  viz.append("rect")
-								.attr("x", -1.5*gridItemWidth)
-							   .attr("y", yPos)
-							   .attr("width", rectW)
-							   .attr("height", rectH)
-							   .style("fill", componentArray[i]) //d3.interpolateHcl(paleYellow, darkBlue)(segmentArr_[i].a))//function(d) {     return heatmapColor(segmentArr_[i].a)})
-							   .style("stroke", '#555');
-		  }
-		  
-	      viz.append("text")
-			  .attr("class", "y label")
-			  .attr("text-anchor", "left")
-			  .attr("x", gridItemWidth*semanticLabels.length+12)
-			  .attr("y", gridItemHeight/1.5+yPos)
-			  //.attr("transform", "rotate(-90)")
-			  .style("font-weight", 400)
-			  .style("font-size", "10px")
-			  .text(componentCodes[componentArray[i]]);
-
-
-		  
-		 
-	  }
-		  
-	  drawAxes(gridItemHeight, gridItemWidth, viz);
-		
-	
-		
-		var legendElementWidth = Math.ceil(((1.0*(width + margin.left + margin.right))/2)/(2*(max-min)));
-		
-		for(var i=min,j=0;i<=max;i++,j++)
-		  {
-			  //console.log("x",legendElementWidth * j);
-			  var rectangle = basicLegend.append("rect")
-								.attr("x", legendElementWidth * j)
-							   .attr("y", 0)
-							   .attr("width", legendElementWidth)
-							   .attr("height", gridItemHeight)
-							   .style("fill", colors(i)) //d3.interpolateHcl(paleYellow, darkBlue)(segmentArr_[i].a))//function(d) {     return heatmapColor(segmentArr_[i].a)})
-							   .style("stroke", '#555')
-							   .style("stroke-width", 0);;
-			  //rectangle.append("title").text(function(d){return segmentArr_[i].a});
-		  }
-		
-		basicLegend.append("text")
-		.attr("class", "mono")
-            .text(min)
-            .attr("x", -10)
-			.attr("y", gridItemHeight+10);
-			
-		 basicLegend.append("text")
-		.attr("class", "mono")
-            .text("Color Legend (count)")
-            .attr("x", legendElementWidth*(max-min)/3)
-            .attr("y", gridItemHeight+10);
-    
-		basicLegend.append("text")
-		.attr("class", "mono")
-            .text(max)
-            .attr("x", legendElementWidth*j)
-            .attr("y", gridItemHeight+10);
-
-        genColorStat();
-	}
-	else
-	{
-				var colors = d3.scale.linear()
-    .domain([min,max])
-    .range(["white", "black"])
-    .interpolate(d3.interpolateHcl);
-		var xPos=0;
-	  var yPos=0;
-	  var rectW= 0;
-	  var rectH=0;
-	  var gridItemWidth = width / (semanticLabels.length+3);
-		var gridItemHeight = height / componentArray.length;
-		var legendElementWidth = 2;//((widthWin + margin.left + margin.right)/2)/colors.length;
-		console.log(width,componentCodes.length,gridItemWidth);
-      for(var i=0;i<componentArray.length;i++)
-	  {
-		  for(var j=0;j<semanticLabels.length;j++)
-		  {
-			  xPos = j*gridItemWidth;
-			  yPos = i*gridItemHeight;//segmentArr_[i].yb-yMin
-			  rectW = gridItemWidth;
-			  rectH = gridItemHeight;
-			  
-			  var rectangle = viz.append("rect")
-                            .attr("x", xPos)
-                           .attr("y", yPos)
-                           .attr("width", rectW)
-						   .attr("height", rectH)
-						   .style("fill", colors(countArray[componentArray[i]][semanticLabels[j]])) //d3.interpolateHcl(paleYellow, darkBlue)(segmentArr_[i].a))//function(d) {     return heatmapColor(segmentArr_[i].a)})
-						   .style("stroke", '#555');
-						   
-			   rectangle.append("title").text
-									(
-										function(d)
-										{
-											var number=countArray[componentArray[i]][semanticLabels[j]]; 
-
-											fontStat[componentArray[i]][semanticLabels[j]] = (1.0*number)/fontCount[componentArray[i]]; //P(F|S)
-
-											var colorName="Font: "+componentCodes[componentArray[i]]+"\n";
-											var semLabel="SemLabel: "+semanticLabels[j]+"\n";
-											return colorName+semLabel+"Count: "+number;
-
-												
-										}
-									);
-		  }
-		  		  
-	      viz.append("text")
-			  .attr("class", "y label")
-			  .attr("text-anchor", "left")
-			  .attr("x", gridItemWidth*semanticLabels.length+12)
-			  .attr("y", gridItemHeight/1.5+yPos)
-			  //.attr("transform", "rotate(-90)")
-			  .style("font-weight", 400)
-			  .style("font-size", "10px")
-			  .text(componentCodes[componentArray[i]]);
-		  
-		 
-	  }
-		  
-	  drawAxes(gridItemHeight, gridItemWidth, viz);
-		
-	
-		
-		var legendElementWidth = Math.ceil(((1.0*(width + margin.left + margin.right))/2)/(2*(max-min)));
-		
-		for(var i=min,j=0;i<=max;i++,j++)
-		  {
-			  //console.log("x",legendElementWidth * j);
-			  var rectangle = basicLegend.append("rect")
-								.attr("x", legendElementWidth * j)
-							   .attr("y", 0)
-							   .attr("width", legendElementWidth)
-							   .attr("height", gridItemHeight)
-							   .style("fill", colors(i)) //d3.interpolateHcl(paleYellow, darkBlue)(segmentArr_[i].a))//function(d) {     return heatmapColor(segmentArr_[i].a)})
-							   .style("stroke", '#555')
-							   .style("stroke-width", 0);;
-			  //rectangle.append("title").text(function(d){return segmentArr_[i].a});
-		  }
-		
-		basicLegend.append("text")
-		.attr("class", "mono")
-            .text(min)
-            .attr("x", -10)
-			.attr("y", gridItemHeight+10);
-			
-		 basicLegend.append("text")
-		.attr("class", "mono")
-            .text("Color Legend (count)")
-            .attr("x", legendElementWidth*(max-min)/3)
-            .attr("y", gridItemHeight+10);
-    
-		basicLegend.append("text")
-		.attr("class", "mono")
-            .text(max)
-            .attr("x", legendElementWidth*j)
-            .attr("y", gridItemHeight+10);
-
-        genFontStat();
-	}
-		 
-	 
-	
-}
-function generateColorBook(){
-
-    //var file = "componentCodes.csv";
-    
-
-    d3.csv(codefile, function(data) {
-		
-		for(var i=0;i<data.length;i++)
-		{
-			//console.log(data[i].Name,data[i].Color);
-			componentCodes[data[i].Color] =  data[i].Name;//data[i].Color
-			
-			colorCount[data[i].Color] = 0;
-
-			componentArray[i] = data[i].Color;
-			
-			var obj = [];
-			
-			for(var j=0;j<semanticLabels.length;j++)
-			{
-				obj[semanticLabels[j]] = 0;
+				var rectangle = viz.append("rect")
+													 .attr("x", xPos)
+													 .attr("y", yPos)
+													 .attr("width", rectW)
+													 .attr("height", rectH)
+													 .style("fill", colors(dataCount[name][sem]))
+													 .style("stroke", '#555');
+																								 
+				rectangle.append("title").text(function(d) {
+					var info = componentCodes[name] + "\n";
+					info += "SemLabel: " + sem + "\n";
+					info += "Count: " + dataCount[name][sem]; 
+					return info;
+				});
 			}
-			countArray[data[i].Color]= obj;
-			
-			colorStat[data[i].Color]= obj;
 
-			obj.length = 0;
+			// color grid
+			if (type === "Color") {
+				viz.append("rect")
+					 .attr("x", -1.5*gridItemWidth)
+					 .attr("y", yPos)
+					 .attr("width", rectW)
+					 .attr("height", rectH)
+					 .style("fill", name)
+					 .style("stroke", '#555');
+			}
+
+			j++; 
 		}
+
+		// Y label
+		viz.append("text")
+			 .attr("class", "y label")
+			 .attr("text-anchor", "left")
+			 .attr("x", gridItemWidth*semanticLabels.length+12)
+			 .attr("y", gridItemHeight/1.5+yPos)
+			 .style("font-weight", 400)
+			 .style("font-size", "10px")
+			 .text(componentCodes[name]);
 		
-		
-		
+		i++;
+		j = 0;
+	}
+
+	drawXLabel(gridItemWidth, gridItemHeight, viz);
+	drawLegend(gridItemWidth, gridItemHeight, colors, viz, legend);
+}
+
+function calculateProb() {
+
+	for(var name in dataCount) {
+		for(var sem in dataCount[name]) {
+			dataProb[name][sem] = dataCount[name][sem]/dataCount[name].total;
+		}
+	}
+}
+
+function sortProb() {
+	var sorted = {}
+	for(var name in dataProb) {
+		sorted[name] = []
+		for(var sem in dataProb[name]) {
+			if (sem !== 'total'){
+				sorted[name].push([sem, dataProb[name][sem]])
+			}
+		}
+		sorted[name].sort(function(a, b) { return b[1] - a[1]} )
+	}
+	
+	return sorted
+}
+
+function showProb() {
+
+	$('#viz').hide();
+	$('#legend').hide();
+	$('#table').show();
+
+	var table = document.getElementById("table");
+	var headR = table.insertRow(0);
+	var headC1 = headR.insertCell(0);
+	var headC2 = headR.insertCell(1);
+	var headC3 = headR.insertCell(2);
+	headC1.innerHTML = "Color";
+	headC2.innerHTML = "Semantic Lable";
+	headC3.innerHTML = "P(Color | Semantic Label)";
+
+	var count = 1;
+	for(var name in dataCount) {
+		for(var sem in dataCount[name]) {
+			if (sem !== "total"){
+				var row = table.insertRow(count);
+				var cell1 = row.insertCell(0);
+				var cell2 = row.insertCell(1);
+				var cell3 = row.insertCell(2);
+
+				cell1.innerHTML = name;
+				cell2.innerHTML = sem;
+				cell3.innerHTML = dataProb[name][sem].toFixed(2);
+				console.log(dataProb[name][sem])
+				count++;
+			}
+		}
+	}
+
+}
+
+function showViz() {
+	render()
+}
+
+function showBar() {
+
+	$('#viz').show();
+	$('#legend').hide();
+	$('#table').hide();
+
+	removeViz();
+
+	var basic = d3.select('#viz')
+		.append('svg')
+		.attr("width", width + margin.left + margin.right)
+		.attr("height", dataSize*2*20 + margin.top + margin.bottom);
+
+	var viz = basic.append("g")
+			.attr("transform", 
+						"translate(" + margin.left/2 + "," + margin.top + ")");
+
+	var sorted = sortProb();
+
+	var colors = [ '#F27077', '#AE77B2', '#6CADDF', '#9DD374', '#E194BC'];
+	var barWidth = 500;
+	var barHeight = 20;
+	
+	var i = 0;
+	for(var name in sorted) {
+		var xPos = 50;
+		var yPos = i*barHeight;
+		var rectW = 0;
+		var rectH = barHeight;
+
+		viz.append("text")
+			 .attr("class", "y label")
+			 .attr("text-anchor", "left")
+			 .attr("x", xPos - 50)
+			 .attr("y", yPos - 5)
+			 .style("font-weight", 400)
+			 .style("font-size", "10px")
+			 .text(componentCodes[name]);
+		if (type === "Color") {
+				viz.append("rect")
+					 .attr("x", xPos - 50)
+					 .attr("y", yPos)
+					 .attr("width", 40)
+					 .attr("height", rectH)
+					 .style("fill", name);
+		}
+
+		for(var j = 0; j < 4; j++) {
+				xPos += rectW;
+				rectW = barWidth*sorted[name][j][1];
+												
+				var rectangle = viz.append("rect")
+													 .attr("x", xPos)
+													 .attr("y", yPos)
+													 .attr("width", rectW)
+													 .attr("height", rectH)
+													 .style("fill", colors[j]);
+																								 
+				rectangle.append("title").text(function(d) {
+					var info = componentCodes[name] + "\n";
+					info += "SemLabel: " + sorted[name][j][0] + "\n";
+					info += "Count: " + dataCount[name][sorted[name][j][0]] + "\n"; 
+					info += "Probability: " + (dataProb[name][sorted[name][j][0]] * 100).toFixed(2) + "%"; 
+					return info;
+				});
+
+		}
+		// last bar
+		xPos += rectW
+		var rectangle = viz.append("rect")
+													 .attr("x", xPos)
+													 .attr("y", yPos)
+													 .attr("width", barWidth - xPos)
+													 .attr("height", rectH)
+													 .style("fill", colors[4]);
+																								 
+		rectangle.append("title").text(function(d) {
+			var info = componentCodes[name] + "\n";
+			info += "etc";
+			return info;
 		});
 
-	
-
-}
-function generateColorCount(){
-		//var file = "colors.csv";
-        d3.csv(datafile, function(data) {
-        //console.log(countArray);
+		var rectangle = viz.append("rect")
+													 .attr("x", 0)
+													 .attr("y", yPos + barHeight)
+													 .attr("width", barWidth)
+													 .attr("height", rectH)
+													 .style("fill", 'white')
+													 .style("stroke", 'white');
+		i += 2;
 		
-		
-		for(var i=0;i<data.length;i++)
-		{
-			var obj = countArray[data[i].Color];
-
-			colorCount[data[i].Color]++;
-			
-			//console.log(data[i].Color,countArray[data[i].Color]);
-			for(var j=0;j<semanticLabels.length;j++)
-			{
-				
-				if(String(semanticLabels[j])==String("casual"))
-					obj[semanticLabels[j]] = parseInt(obj[semanticLabels[j]])+ parseInt(data[i].casual);
-				if(String(semanticLabels[j])==String("chic"))
-					obj[semanticLabels[j]] = parseInt(obj[semanticLabels[j]])+ parseInt(data[i].chic);
-				if(String(semanticLabels[j])==String("classic"))
-					obj[semanticLabels[j]] = parseInt(obj[semanticLabels[j]])+ parseInt(data[i].classic);
-				if(String(semanticLabels[j])==String("clear"))
-					obj[semanticLabels[j]] = parseInt(obj[semanticLabels[j]])+ parseInt(data[i].clear);
-				if(String(semanticLabels[j])==String("cool casual"))
-					obj[semanticLabels[j]] = parseInt(obj[semanticLabels[j]])+ parseInt(data[i].cool);
-				if(String(semanticLabels[j])==String("dandy"))
-					obj[semanticLabels[j]] = parseInt(obj[semanticLabels[j]])+ parseInt(data[i].dandy);
-				if(String(semanticLabels[j])==String("dynamic"))
-					obj[semanticLabels[j]] = parseInt(obj[semanticLabels[j]])+ parseInt(data[i].dynamic);
-				if(String(semanticLabels[j])==String("elegant"))
-					obj[semanticLabels[j]] = parseInt(obj[semanticLabels[j]])+ parseInt(data[i].elegant);
-				if(String(semanticLabels[j])==String("gorgeous"))
-					obj[semanticLabels[j]] = parseInt(obj[semanticLabels[j]])+ parseInt(data[i].gorgeous);
-				if(String(semanticLabels[j])==String("modern"))
-					obj[semanticLabels[j]] = parseInt(obj[semanticLabels[j]])+ parseInt(data[i].modern);
-				if(String(semanticLabels[j])==String("natural"))
-					obj[semanticLabels[j]] = parseInt(obj[semanticLabels[j]])+ parseInt(data[i].natural);
-				if(String(semanticLabels[j])==String("pretty"))
-					obj[semanticLabels[j]] = parseInt(obj[semanticLabels[j]])+ parseInt(data[i].pretty);
-				if(String(semanticLabels[j])==String("romantic"))
-					obj[semanticLabels[j]] = parseInt(obj[semanticLabels[j]])+ parseInt(data[i].romantic);
-				
-				if(max<obj[semanticLabels[j]])
-					max = obj[semanticLabels[j]];
-
-				if(min > obj[semanticLabels[j]])
-					min = obj[semanticLabels[j]];
-			}
-			
-			countArray[data[i].Color] = obj;
-		}
-
-		        
-
-    });
-	
-
-}
-
-function generateFontBook(){
-
-    //var file = "componentCodes.csv";
-    
-
-    d3.csv(codefile, function(data) {
-		
-		for(var i=0;i<data.length;i++)
-		{
-			//console.log(data[i]);
-			componentCodes[data[i].Font] =  data[i].Name;//data[i].Color
-			
-			fontCount[data[i].Font] = 0;
-
-			componentArray[i] = data[i].Font;
-			
-			var obj = [];
-			
-			for(var j=0;j<semanticLabels.length;j++)
-			{
-				obj[semanticLabels[j]] = 0;
-			}
-			countArray[data[i].Font]= obj;
-
-			fontStat[data[i].Font]= obj;
-			
-			obj.length = 0;
-		}
-		
-		
-		
-		});
-
-	
-
-}
-
-function generateFontCount(){
-		//var file = "colors.csv";
-        d3.csv(datafile, function(data) {
-        //console.log(countArray);
-		
-		
-		for(var i=0;i<data.length;i++)
-		{
-			var obj = countArray[data[i].Font];
-			
-			fontCount[data[i].Font]++;
-			//console.log(i,data[i]);
-			for(var j=0;j<semanticLabels.length;j++)
-			{
-				
-				if(String(semanticLabels[j])==String("casual"))
-					obj[semanticLabels[j]] = parseInt(obj[semanticLabels[j]])+ parseInt(data[i].casual);
-				if(String(semanticLabels[j])==String("chic"))
-					obj[semanticLabels[j]] = parseInt(obj[semanticLabels[j]])+ parseInt(data[i].chic);
-				if(String(semanticLabels[j])==String("classic"))
-					obj[semanticLabels[j]] = parseInt(obj[semanticLabels[j]])+ parseInt(data[i].classic);
-				if(String(semanticLabels[j])==String("clear"))
-					obj[semanticLabels[j]] = parseInt(obj[semanticLabels[j]])+ parseInt(data[i].clear);
-				if(String(semanticLabels[j])==String("cool casual"))
-					obj[semanticLabels[j]] = parseInt(obj[semanticLabels[j]])+ parseInt(data[i].cool);
-				if(String(semanticLabels[j])==String("dandy"))
-					obj[semanticLabels[j]] = parseInt(obj[semanticLabels[j]])+ parseInt(data[i].dandy);
-				if(String(semanticLabels[j])==String("dynamic"))
-					obj[semanticLabels[j]] = parseInt(obj[semanticLabels[j]])+ parseInt(data[i].dynamic);
-				if(String(semanticLabels[j])==String("elegant"))
-					obj[semanticLabels[j]] = parseInt(obj[semanticLabels[j]])+ parseInt(data[i].elegant);
-				if(String(semanticLabels[j])==String("gorgeous"))
-					obj[semanticLabels[j]] = parseInt(obj[semanticLabels[j]])+ parseInt(data[i].gorgeous);
-				if(String(semanticLabels[j])==String("modern"))
-					obj[semanticLabels[j]] = parseInt(obj[semanticLabels[j]])+ parseInt(data[i].modern);
-				if(String(semanticLabels[j])==String("natural"))
-					obj[semanticLabels[j]] = parseInt(obj[semanticLabels[j]])+ parseInt(data[i].natural);
-				if(String(semanticLabels[j])==String("pretty"))
-					obj[semanticLabels[j]] = parseInt(obj[semanticLabels[j]])+ parseInt(data[i].pretty);
-				if(String(semanticLabels[j])==String("romantic"))
-					obj[semanticLabels[j]] = parseInt(obj[semanticLabels[j]])+ parseInt(data[i].romantic);
-				
-				if(max<obj[semanticLabels[j]])
-					max = obj[semanticLabels[j]];
-
-				if(min > obj[semanticLabels[j]])
-					min = obj[semanticLabels[j]];
-			}
-			
-			countArray[data[i].Font] = obj;
-		}
-
-		        
-
-    });
-	
-
-}
-//render();
-
- function genColorStat()
- {
- 	var table = document.getElementById("colorTable");
- 	//console.log(table);
- 	var headR = table.insertRow(0);
- 	var headC1 = headR.insertCell(0);
- 	var headC2 = headR.insertCell(1);
- 	var headC3 = headR.insertCell(2);
- 	headC1.innerHTML = "Color";
-    headC2.innerHTML = "Semantic Label";
-    headC3.innerHTML = "P(Color | Semantic Label)";
-
-    var count = 1;
-    for(var i=0;i<componentArray.length;i++)
-	{
-		  
-		  for(var j=0;j<semanticLabels.length;j++)
-		  {
-		  	var row = table.insertRow(count);
-		  	count++;
-		  	var cell1 = row.insertCell(0);
-	    	var cell2 = row.insertCell(1);
-	    	var cell3 = row.insertCell(2);
-
-	    	cell1.innerHTML = componentCodes[componentArray[i]];
-	    	cell2.innerHTML = semanticLabels[j];
-	    	var prob = (colorStat[componentArray[i]][semanticLabels[j]])*100;
-	    	cell3.innerHTML = prob.toFixed(2);
-	    
-
-
-		  }
 	}
 
-	document.getElementById("colorTable").display = "None";
- 	
-
 }
 
-function genFontStat()
- {
- 	var table = document.getElementById("fontTable");
- 	//console.log(table);
- 	var headR = table.insertRow(0);
- 	var headC1 = headR.insertCell(0);
- 	var headC2 = headR.insertCell(1);
- 	var headC3 = headR.insertCell(2);
- 	headC1.innerHTML = "Font";
-    headC2.innerHTML = "Semantic Label";
-    headC3.innerHTML = "P(Font | Semantic Label)";
 
-    var count = 1;
-    for(var i=0;i<componentArray.length;i++)
-	{
-		  
-		  for(var j=0;j<semanticLabels.length;j++)
-		  {
-		  	var row = table.insertRow(count);
-		  	count++;
-		  	var cell1 = row.insertCell(0);
-	    	var cell2 = row.insertCell(1);
-	    	var cell3 = row.insertCell(2);
+$(document).ready(function() { 
 
-	    	cell1.innerHTML = componentCodes[componentArray[i]];
-	    	cell2.innerHTML = semanticLabels[j];
-	    	var prob = (fontStat[componentArray[i]][semanticLabels[j]])*100;
-	    	cell3.innerHTML = prob.toFixed(2);
-	    
+	$('#typeattr').on('change', function(){
+		type = $(this).find('option:selected').val();
+		initData();
+	});
 
+	$('#viz').hide();
+	$('#legend').hide();
+	$('#table').hide();
 
-		  }
-	}
- 	
- 	document.getElementById("fontTable").display = "None";
-
-
- }
-
- function showColorStat()
- {
- 	document.getElementById("tableC").display = "block";
- 	document.getElementById("colorTable").display = "block";
- }
-
- function showFontStat()
- {
- 	document.getElementById("tableF").display = "block";
- 	document.getElementById("fontTable").display = "block";
- }
-
- $('#filterattr').on('change', function(){
-	 filtervalue = $(this).find("option:selected").val();
-	 componentCodes = [];
-     countArray = [];
-     componentArray = [];
-	 
-	 componentCodes.length=0;
-     countArray.length=0;
-     componentArray.length=0;
-	 if(String(filtervalue) == String("Font"))
-	 {
-		 
-		 codefile = "fontcodes.csv";
-		 datafile = "fonts.csv";
-		 generateFontBook();
-		generateFontCount();
-	 }
-	 
-	else if(String(filtervalue) == String("Color"))
-	{
-		 
-		 codefile = "colorcodes.csv";
-		 datafile = "colors.csv";
-		 generateColorBook();
-			generateColorCount();
-	 }	
-	 
- });
-
+});
 

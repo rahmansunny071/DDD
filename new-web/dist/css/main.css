@@ -122,7 +122,6 @@ input[type=range]::-webkit-slider-thumb {
 }
 
 .left-bar {
-
   font: 12px Helvetica, Arial, sans-serif;
   background-color: #28313D;
   position: absolute;
@@ -133,6 +132,7 @@ input[type=range]::-webkit-slider-thumb {
   height: 100%;
   color: white;
   overflow: hidden;
+  padding: 0, 20px;
 }
 
 .right-bar {
