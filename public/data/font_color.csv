@@ -1,0 +1,200 @@
+Answer.ColorCondition,Answer.FontCondition,Answer.casual,Answer.chic,Answer.classic,Answer.clear,Answer.cool casual,Answer.dandy,Answer.dynamic,Answer.elegant,Answer.gorgeous,Answer.modern,Answer.natural,Answer.pretty,Answer.romantic
+#cb2027,"Lobster, cursive",0,0,0,0,0,0,0,0,0,1,0,0,0
+#00bf8f,"Lobster, cursive",0,1,0,1,0,0,0,1,0,1,1,1,0
+#fffc00,"Lobster, cursive",1,0,0,0,0,0,0,1,0,0,0,0,0
+#aad450,"Lobster, cursive",0,0,1,0,0,0,0,1,0,0,0,0,0
+#32506d,"Lobster, cursive",0,1,1,0,0,1,1,0,0,1,0,0,0
+#00aced,"Monoton, cursive",0,0,0,0,0,0,0,0,0,1,0,0,0
+#bb0000,"Monoton, cursive",1,0,0,0,0,0,0,0,0,1,0,0,0
+#4dc247,"Monoton, cursive",0,0,0,0,1,0,0,0,0,0,0,0,0
+#00bf8f,"Monoton, cursive",0,0,0,0,0,0,0,0,0,1,0,0,0
+#a82400,"Monoton, cursive",0,0,0,0,0,0,0,0,0,1,0,0,0
+#45668e,"Monoton, cursive",1,0,0,0,0,0,1,0,0,1,0,0,0
+#0072b1,"Monoton, cursive",0,1,0,0,1,0,0,0,0,1,0,0,0
+#3b5998,"Monoton, cursive",0,0,0,0,0,0,1,0,0,1,0,0,0
+#00aced,"Old Standard TT, serif",0,0,1,0,0,0,0,0,0,0,1,1,0
+#bb0000,"Old Standard TT, serif",0,1,0,1,0,0,0,0,0,0,0,0,1
+#125688,"Old Standard TT, serif",0,0,1,0,0,0,0,0,0,0,0,0,0
+#00bf8f,"Old Standard TT, serif",0,0,1,0,0,0,0,0,0,0,0,1,0
+#007ee5,"Old Standard TT, serif",0,0,0,0,0,0,1,1,0,0,0,0,1
+#ff0084,"Old Standard TT, serif",0,0,0,0,0,0,0,1,0,0,0,1,1
+#aad450,"Old Standard TT, serif",0,0,0,0,0,0,0,0,0,1,0,0,0
+#3b5998,"Old Standard TT, serif",0,0,1,0,0,0,0,0,0,0,0,0,0
+#dd4b39,"Merriweather, serif",0,0,0,0,0,0,1,1,0,1,1,1,0
+#007bb5,"Merriweather, serif",0,0,0,0,1,0,0,0,0,0,0,0,0
+#4dc247,"Merriweather, serif",0,0,1,1,0,0,0,0,0,0,0,0,0
+#ff0084,"Merriweather, serif",0,0,1,1,0,0,0,1,0,0,0,1,0
+#45668e,"Merriweather, serif",0,0,0,1,0,0,0,1,0,0,1,1,0
+#0072b1,"Merriweather, serif",0,0,1,0,0,0,0,0,0,0,0,0,0
+#00aced,"Open Sans, san serif",0,0,0,0,1,0,0,0,0,1,0,0,0
+#007bb5,"Open Sans, san serif",0,0,0,0,1,0,0,0,0,0,0,0,0
+#cb2027,"Open Sans, san serif",1,0,0,0,0,0,0,0,0,0,0,0,0
+#fffc00,"Open Sans, san serif",0,0,0,0,0,0,0,0,0,0,0,1,0
+#ff0084,"Open Sans, san serif",1,0,0,0,0,0,0,0,0,0,0,0,0
+#32506d,"Open Sans, san serif",0,0,1,0,0,0,0,0,0,0,0,0,0
+#0072b1,"Open Sans, san serif",1,0,0,1,0,0,0,0,0,1,0,0,0
+#00aced,"Lato, san serif",1,0,0,1,1,0,0,0,0,0,0,0,0
+#bb0000,"Lato, san serif",1,0,0,1,0,0,0,0,0,1,0,0,0
+#125688,"Lato, san serif",0,0,0,0,0,0,0,0,0,1,1,1,0
+#4dc247,"Lato, san serif",0,0,1,0,0,0,0,1,0,0,0,1,0
+#00bf8f,"Lato, san serif",1,0,1,1,1,0,0,0,0,1,0,0,0
+#a82400,"Lato, san serif",0,0,1,1,0,0,0,1,1,0,0,0,1
+#ff0084,"Lato, san serif",0,0,0,1,1,0,1,0,1,1,0,1,0
+#45668e,"Lato, san serif",1,0,1,0,0,0,0,0,1,1,1,1,0
+#0072b1,"Lato, san serif",0,0,0,1,0,0,0,0,0,0,1,0,0
+#00aced,"Roboto, san serif",0,0,0,0,0,0,0,0,0,1,1,0,0
+#bb0000,"Roboto, san serif",1,1,0,1,0,0,0,0,0,0,1,0,0
+#125688,"Roboto, san serif",1,0,1,0,1,0,1,1,1,1,1,0,0
+#cb2027,"Roboto, san serif",0,0,0,1,0,0,0,0,0,1,0,1,0
+#fffc00,"Roboto, san serif",0,0,0,0,1,0,0,1,0,1,0,0,0
+#a82400,"Roboto, san serif",0,0,0,0,1,0,0,0,0,0,0,0,0
+#ff0084,"Roboto, san serif",0,0,0,1,0,0,0,0,0,0,0,0,0
+#45668e,"Roboto, san serif",1,0,1,1,0,0,0,1,0,0,1,0,0
+#0072b1,"Roboto, san serif",0,0,0,1,1,0,1,0,0,0,0,0,0
+#00aced,"Pacifico, cursive",0,0,0,0,0,0,0,1,0,0,0,0,0
+#007bb5,"Pacifico, cursive",0,0,1,0,0,0,0,0,0,0,0,1,1
+#4dc247,"Pacifico, cursive",0,0,0,0,0,0,0,0,0,0,0,1,0
+#00bf8f,"Pacifico, cursive",0,0,1,0,1,0,0,0,0,0,0,1,0
+#a82400,"Pacifico, cursive",0,0,0,0,0,0,0,1,0,0,0,0,0
+#ff0084,"Pacifico, cursive",0,0,0,0,0,0,0,1,0,0,0,1,0
+#45668e,"Pacifico, cursive",0,0,1,0,0,0,0,0,0,0,0,1,0
+#0072b1,"Pacifico, cursive",1,1,0,0,1,0,0,0,0,0,0,0,0
+#00aced,"Tangerine, cursive",0,1,0,1,0,0,0,1,1,1,0,1,1
+#bb0000,"Tangerine, cursive",0,1,0,0,0,0,1,1,0,0,0,1,0
+#cb2027,"Tangerine, cursive",0,0,1,0,0,0,0,1,1,0,0,1,1
+#a82400,"Tangerine, cursive",0,0,0,0,0,0,0,0,0,0,0,0,1
+#ff0084,"Tangerine, cursive",0,0,0,0,0,1,0,1,1,0,0,1,1
+#aad450,"Tangerine, cursive",0,0,0,0,0,0,0,1,0,0,0,0,0
+#0072b1,"Tangerine, cursive",0,0,0,1,0,0,0,1,0,0,0,0,1
+#00aced,"Waiting for the Sunrise, cursive",1,0,0,0,0,0,0,0,0,0,0,0,0
+#bb0000,"Waiting for the Sunrise, cursive",1,0,0,0,0,0,0,0,0,0,0,0,0
+#125688,"Waiting for the Sunrise, cursive",1,0,0,0,0,0,0,0,0,0,0,0,0
+#4dc247,"Waiting for the Sunrise, cursive",0,1,0,0,0,0,0,0,0,0,0,0,0
+#fffc00,"Waiting for the Sunrise, cursive",0,0,1,0,0,0,0,0,0,0,0,0,0
+#007ee5,"Waiting for the Sunrise, cursive",1,0,0,0,0,0,0,0,0,0,1,0,0
+#32506d,"Waiting for the Sunrise, cursive",1,1,0,0,1,0,1,0,1,1,0,1,1
+#aad450,"Waiting for the Sunrise, cursive",1,1,0,1,1,0,0,0,0,1,0,1,0
+#3b5998,"Waiting for the Sunrise, cursive",0,0,0,0,1,0,0,0,0,0,0,0,0
+#dd4b39,"Inconsolata",0,0,0,0,0,0,1,0,0,1,0,0,0
+#125688,"Inconsolata",0,0,1,1,0,0,0,1,0,1,1,0,0
+#4dc247,"Inconsolata",0,0,0,1,1,0,0,0,0,1,0,0,0
+#00bf8f,"Inconsolata",0,0,0,0,0,0,1,0,0,1,0,1,0
+#a82400,"Inconsolata",0,0,0,1,0,0,0,0,0,0,0,0,0
+#ff0084,"Inconsolata",0,0,1,1,1,0,0,0,0,0,0,0,0
+#45668e,"Inconsolata",0,0,0,1,1,0,0,0,0,1,1,0,0
+#0072b1,"Inconsolata",0,0,0,0,1,0,0,0,0,1,0,0,0
+#00aced,"Lobster, cursive",1,0,0,0,0,0,0,0,0,0,0,1,1
+#bb0000,"Lobster, cursive",0,0,0,0,0,1,1,1,0,0,0,0,0
+#cb2027,"Lobster, cursive",0,0,0,0,0,0,0,1,0,0,0,0,0
+#125688,"Lobster, cursive",0,0,0,0,0,0,0,0,0,0,0,0,1
+#fffc00,"Lobster, cursive",0,0,0,0,0,1,0,0,0,0,0,0,0
+#007ee5,"Lobster, cursive",0,0,1,1,0,0,0,0,1,1,1,1,0
+#45668e,"Lobster, cursive",0,0,1,1,0,0,0,1,0,0,0,1,1
+#0072b1,"Lobster, cursive",0,1,0,0,0,0,0,0,0,0,0,1,0
+#00aced,"Monoton, cursive",0,0,0,0,0,0,0,0,0,1,0,0,0
+#007bb5,"Monoton, cursive",0,0,0,0,1,0,0,0,0,0,0,0,0
+#125688,"Monoton, cursive",1,1,1,1,1,0,0,1,0,1,0,1,0
+#00bf8f,"Monoton, cursive",0,0,0,0,1,0,0,0,0,1,0,0,0
+#ff0084,"Monoton, cursive",0,0,0,0,1,0,0,0,0,0,0,0,0
+#32506d,"Monoton, cursive",0,0,0,0,1,0,0,0,0,0,0,0,0
+#aad450,"Monoton, cursive",0,0,1,0,0,0,0,0,0,0,0,0,0
+#3b5998,"Monoton, cursive",1,0,0,0,1,0,0,0,0,1,0,0,0
+#00aced,"Old Standard TT, serif",0,0,0,1,1,0,0,1,0,0,0,1,0
+#bb0000,"Old Standard TT, serif",0,0,1,1,0,0,0,1,0,0,0,1,0
+#125688,"Old Standard TT, serif",0,1,0,0,0,0,0,0,0,0,0,0,0
+#4dc247,"Old Standard TT, serif",0,0,0,0,1,0,0,0,0,0,0,0,0
+#00bf8f,"Old Standard TT, serif",0,1,1,0,1,0,0,0,0,0,0,1,0
+#a82400,"Old Standard TT, serif",0,0,0,0,0,1,0,0,0,0,0,0,0
+#ff0084,"Old Standard TT, serif",0,1,0,0,0,0,0,0,0,0,0,0,0
+#45668e,"Old Standard TT, serif",0,0,0,0,0,0,0,1,0,0,0,0,0
+#3b5998,"Old Standard TT, serif",1,0,0,0,1,1,1,0,0,0,0,0,0
+#dd4b39,"Merriweather, serif",0,0,1,1,0,0,0,0,0,0,0,0,0
+#007bb5,"Merriweather, serif",0,1,0,1,1,0,1,1,1,1,0,1,0
+#cb2027,"Merriweather, serif",0,0,0,0,0,0,1,0,0,0,0,0,0
+#fffc00,"Merriweather, serif",0,0,0,0,0,1,0,0,0,0,0,0,0
+#32506d,"Merriweather, serif",0,0,1,0,0,0,0,0,0,0,0,0,0
+#0072b1,"Merriweather, serif",0,0,1,1,0,0,0,0,0,1,0,0,0
+#00aced,"Open Sans, san serif",0,0,0,1,0,0,0,0,0,0,0,0,0
+#bb0000,"Open Sans, san serif",0,0,0,1,0,0,1,0,0,1,0,0,0
+#125688,"Open Sans, san serif",1,0,1,1,0,0,0,0,0,0,1,0,0
+#cb2027,"Open Sans, san serif",0,0,0,0,1,0,0,0,0,0,0,0,0
+#fffc00,"Open Sans, san serif",0,0,0,0,1,0,0,0,0,0,0,0,0
+#007ee5,"Open Sans, san serif",0,0,0,0,1,0,0,0,0,0,0,0,0
+#32506d,"Open Sans, san serif",0,0,1,1,0,0,0,1,0,0,0,0,0
+#aad450,"Open Sans, san serif",1,0,0,1,0,0,0,0,0,1,0,0,0
+#3b5998,"Open Sans, san serif",0,0,0,1,0,0,0,0,0,1,1,0,0
+#dd4b39,"Lato, san serif",0,0,0,0,0,0,0,0,0,1,0,0,1
+#007bb5,"Lato, san serif",0,0,0,1,0,0,0,0,0,0,0,0,0
+#cb2027,"Lato, san serif",0,0,0,1,0,0,0,0,0,0,0,0,0
+#fffc00,"Lato, san serif",0,0,0,0,0,1,1,0,0,0,0,0,0
+#007ee5,"Lato, san serif",0,0,1,0,0,0,0,0,0,0,0,0,0
+#32506d,"Lato, san serif",0,0,0,1,0,0,0,0,0,0,0,0,0
+#aad450,"Lato, san serif",1,0,0,1,0,0,0,0,0,1,1,0,0
+#3b5998,"Lato, san serif",0,0,0,0,1,0,0,0,0,0,0,0,0
+#dd4b39,"Roboto, san serif",0,0,1,0,0,0,0,0,0,0,0,0,0
+#007bb5,"Roboto, san serif",0,0,0,1,1,0,0,0,0,0,1,0,0
+#4dc247,"Roboto, san serif",0,0,0,1,1,0,0,0,0,0,0,1,0
+#00bf8f,"Roboto, san serif",0,0,0,0,0,0,0,0,0,1,0,0,0
+#007ee5,"Roboto, san serif",1,0,1,0,0,0,0,0,0,0,0,0,0
+#45668e,"Roboto, san serif",1,0,1,1,1,0,0,0,0,0,1,0,0
+#aad450,"Roboto, san serif",0,0,0,0,0,0,0,0,0,0,1,0,0
+#3b5998,"Roboto, san serif",1,0,1,1,0,0,0,1,0,0,0,0,0
+#dd4b39,"Pacifico, cursive",0,0,0,0,0,0,0,0,0,0,0,1,0
+#007bb5,"Pacifico, cursive",0,0,0,0,1,0,0,0,0,0,0,0,0
+#4dc247,"Pacifico, cursive",0,0,0,0,1,0,0,0,0,0,0,1,0
+#00bf8f,"Pacifico, cursive",0,1,0,0,0,1,0,0,0,0,0,0,0
+#a82400,"Pacifico, cursive",1,0,1,0,1,0,0,0,1,0,0,0,0
+#ff0084,"Pacifico, cursive",0,0,0,0,0,1,0,0,0,0,0,0,0
+#aad450,"Pacifico, cursive",0,1,1,0,0,0,0,1,0,0,0,0,1
+#3b5998,"Pacifico, cursive",1,0,0,1,0,0,0,1,0,0,0,1,0
+#dd4b39,"Tangerine, cursive",0,0,1,0,0,0,0,0,0,0,0,0,0
+#007bb5,"Tangerine, cursive",0,0,1,0,0,0,0,1,0,0,0,1,0
+#125688,"Tangerine, cursive",0,0,0,1,0,1,1,0,0,0,0,0,0
+#cb2027,"Tangerine, cursive",0,0,0,0,0,0,0,1,0,0,0,0,1
+#a82400,"Tangerine, cursive",0,0,1,0,0,1,0,1,0,0,0,1,1
+#32506d,"Tangerine, cursive",1,0,1,0,0,0,0,0,0,0,0,1,0
+#45668e,"Tangerine, cursive",0,0,0,1,0,0,0,1,0,1,0,1,0
+#aad450,"Tangerine, cursive",0,0,1,0,0,0,0,1,0,1,0,0,0
+#0072b1,"Tangerine, cursive",1,0,1,0,0,0,0,0,0,1,0,1,0
+#00aced,"Waiting for the Sunrise, cursive",1,1,0,0,0,0,0,0,0,0,0,1,0
+#bb0000,"Waiting for the Sunrise, cursive",0,0,0,0,0,0,0,0,0,1,0,0,0
+#125688,"Waiting for the Sunrise, cursive",1,0,0,0,0,0,0,0,0,0,0,0,0
+#00bf8f,"Waiting for the Sunrise, cursive",1,0,0,0,0,0,0,0,0,0,0,0,0
+#a82400,"Waiting for the Sunrise, cursive",0,0,0,1,0,0,0,0,1,0,0,0,0
+#ff0084,"Waiting for the Sunrise, cursive",1,0,0,0,0,1,0,0,0,0,0,0,0
+#45668e,"Waiting for the Sunrise, cursive",0,0,0,0,1,0,0,0,0,0,0,0,0
+#0072b1,"Waiting for the Sunrise, cursive",1,0,0,0,1,0,0,0,0,0,1,0,0
+#00aced,"Inconsolata",1,0,0,0,0,0,0,0,0,0,0,0,0
+#bb0000,"Inconsolata",0,0,1,0,0,0,0,0,0,0,0,0,0
+#4dc247,"Inconsolata",0,0,0,1,1,0,0,0,0,1,0,0,0
+#00bf8f,"Inconsolata",1,0,0,1,1,0,0,0,0,1,0,0,0
+#a82400,"Inconsolata",0,0,0,1,0,0,0,0,0,1,0,0,0
+#ff0084,"Inconsolata",0,0,0,1,1,0,0,0,0,0,0,0,0
+#45668e,"Inconsolata",0,0,0,0,1,0,0,0,0,0,0,0,0
+#0072b1,"Inconsolata",1,0,0,1,0,0,0,0,0,1,1,0,0
+#bb0000,"Lobster, cursive",0,0,0,0,0,0,0,1,0,0,0,1,1
+#125688,"Lobster, cursive",0,0,0,0,0,0,0,1,1,1,0,1,1
+#cb2027,"Lobster, cursive",0,0,0,1,1,0,0,0,0,1,1,0,0
+#a82400,"Lobster, cursive",0,1,0,1,0,0,0,1,0,0,0,1,1
+#32506d,"Lobster, cursive",0,0,0,1,1,1,0,1,0,0,0,0,0
+#aad450,"Lobster, cursive",0,0,1,1,0,0,0,0,0,0,1,1,0
+#0072b1,"Lobster, cursive",0,0,0,0,1,0,0,0,0,0,0,1,0
+#00aced,"Monoton, cursive",0,0,0,0,0,1,1,0,0,1,0,0,0
+#bb0000,"Monoton, cursive",0,0,0,0,0,0,1,0,0,0,0,0,0
+#4dc247,"Monoton, cursive",0,0,0,0,1,0,1,0,0,0,0,0,0
+#00bf8f,"Monoton, cursive",0,0,0,0,0,0,1,0,0,0,0,0,0
+#a82400,"Monoton, cursive",0,1,0,0,0,0,0,0,0,0,0,0,0
+#ff0084,"Monoton, cursive",0,0,0,0,1,0,0,0,0,0,0,0,0
+#45668e,"Monoton, cursive",0,1,1,1,1,0,0,0,0,1,0,1,0
+#0072b1,"Monoton, cursive",0,0,0,0,1,0,0,0,0,1,0,1,0
+#00aced,"Old Standard TT, serif",0,0,1,1,0,0,0,1,0,0,0,1,0
+#007bb5,"Old Standard TT, serif",0,0,1,0,0,0,0,0,0,0,0,0,0
+#4dc247,"Old Standard TT, serif",1,0,1,1,1,0,0,0,1,0,1,0,1
+#fffc00,"Old Standard TT, serif",0,0,0,0,0,0,1,0,0,0,0,0,0
+#007ee5,"Old Standard TT, serif",0,0,0,1,0,0,0,0,0,0,0,0,0
+#32506d,"Old Standard TT, serif",1,1,0,0,1,1,0,0,0,0,0,0,0
+#0072b1,"Old Standard TT, serif",0,0,0,1,0,0,0,0,0,0,1,1,1
+#dd4b39,"Merriweather, serif",1,0,1,1,1,0,0,0,0,0,0,0,0
+#007bb5,"Merriweather, serif",0,0,0,0,0,0,1,0,0,0,0,0,0
+#4dc247,"Merriweather, serif",1,0,0,1,0,0,0,0,0,1,0,0,0
+#cb2027,"Merriweather, serif",0,0,1,0,0,0,0,1,0,0,0,0,1

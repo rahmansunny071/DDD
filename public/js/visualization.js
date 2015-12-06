@@ -35,14 +35,15 @@ function initData() {
 
 		componentCodes = {};
 		dataCount = {};
+		dataDir = "data/";
 
 		if(type === "Color") {
-				codefile = "colorcodes.csv";
-				datafile = "colors.csv"; 
+				codefile = dataDir + "colorcodes.csv";
+				datafile = dataDir + "colors.csv"; 
 		}
 		else {
-				codefile = "fontcodes.csv";
-				datafile = "fonts.csv"; 
+				codefile = dataDir + "fontcodes.csv";
+				datafile = dataDir + "fonts.csv"; 
 		}
 
 		generateBook();
